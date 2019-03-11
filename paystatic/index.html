@@ -1,0 +1,179 @@
+<!doctype html>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="Codev.kz">
+  <meta property="og:title" content="sociolift.kz">
+  <meta property="og:url" content="http://sociolift.kz/ru">
+  <meta property="og:image" content="http://sociolift.kz/media/images/puzzle.png">
+  <meta property="og:site_name" content="sociolift.kz">
+  <meta property="og:type" content="blog">
+  <meta property="og:description" content="">
+  <link rel="icon" href="http://sociolift.kz/favicon.ico" type="image/x-icon">
+  <title>Оплата SocialLift</title>
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="loader.css" />
+
+  <style>
+    .bd-placeholder-img {
+      font-size: 1.125rem;
+      text-anchor: middle;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+    }
+
+    @media (min-width: 768px) {
+      .bd-placeholder-img-lg {
+        font-size: 3.5rem;
+      }
+    }
+
+    /* Center the loader */
+    
+  </style>
+
+  <!-- Custom styles for this template -->
+
+  <link href="form-validation.css" rel="stylesheet">
+</head>
+
+<body class="bg-light">
+  <div class="container">
+    <div class="py-5 text-center">
+      <img class="d-block mx-auto mb-4" src="http://sociolift.kz/media/images/logo.png" alt="" width="130" height="130">
+      <h2>Оплата</h2>
+      <p class="lead">Здесь вы можете оплатить курсы Open English</p>
+    </div>
+    <div class="row">
+
+      <div class="col-md-4 order-md-2 mb-4">
+        <h4 class="d-flex justify-content-between align-items-center mb-3">
+          <span class="text-muted">Ваши курсы</span>
+        </h4>
+        <ul class="list-group mb-3" id="list">
+          <li class="list-group-item d-flex justify-content-between lh-condensed" id="el">
+            <div>
+              <h6 id='courseName' class="my-0">Open English</h6>
+              <small id='courseDesc' class="text-muted">Курс Open English</small>
+            </div>
+            <span id='coursePrice' class="text-muted">5500 тенге</span>
+          </li>
+        </ul>
+      </div>
+
+      <div class="col-md-8 order-md-1">
+        <h4 class="mb-3">Ваши данные</h4>
+        <form class="needs-validation" novalidate onsubmit="return false">
+          <div class="row">
+
+            <div class="col-md-6 mb-3">
+              <label for="lastName">Фамилия</label>
+              <input type="text" class="form-control" id="lastName" placeholder="" value="" required>
+              <div class="invalid-feedback">
+                Требуется ввести Фамилию.
+              </div>
+            </div>
+
+            <div class="col-md-6 mb-3">
+              <label for="firstName">Имя</label>
+              <input type="text" class="form-control" id="firstName" placeholder="" value="" required>
+              <div class="invalid-feedback">
+                Требуется ввести Имя.
+              </div>
+            </div>
+
+          </div>
+
+          <div class="mb-3">
+            <label for="iin">ИИН</label>
+            <input class="form-control" id="iin" placeholder="" value="" required>
+            <div class="invalid-feedback">
+              Требуется ввести ИИН.
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-5 mb-3">
+              <label for="selectCourse">Курс</label>
+              <select class="custom-select d-block w-100" id="selectCourse" onchange="changeCourse();" required>
+                <option value="5500">Open English 1</option>
+                
+              </select>
+              <div class="invalid-feedback">
+                Выберите курс
+              </div>
+            </div>
+          </div>
+
+          <hr class="mb-4">
+          <div class="btn btn-primary btn-lg btn-block" onclick="Pay();">Оплатить</div>
+        </form>
+      </div>
+    </div>
+
+    <footer class="my-5 pt-5 text-muted text-center text-small">
+      <p class="mb-1">&copy; 2019 Socio Lift</p>
+      <!-- <ul class="list-inline">
+      <li class="list-inline-item"><a href="#">Privacy</a></li>
+      <li class="list-inline-item"><a href="#">Terms</a></li>
+      <li class="list-inline-item"><a href="#">Support</a></li>
+    </ul> -->
+    </footer>
+
+  </div>
+  
+  <script src="form-validation.js"></script>
+  <script>
+    var a = "";
+    function changeCourse() {
+      var selectCourseBox = document.getElementById('selectCourse');
+      var selectedValue = selectCourseBox.options[selectCourseBox.selectedIndex].value;
+      var selectedText = selectCourseBox.options[selectCourseBox.selectedIndex].text;
+      document.getElementById('courseName').innerText = selectedText;
+      document.getElementById('courseDesc').innerText = "Курс " + selectedText;
+      document.getElementById('coursePrice').innerText = selectedValue + " тенге";
+    }
+    function Pay() {
+      const apiUrl = "https://social.codev.kz/home/pay?";
+      var forms = document.getElementsByClassName('needs-validation')
+
+      // Loop over them and prevent submission
+
+      Array.prototype.filter.call(forms, function (form) {
+        if (form.checkValidity() === true) {
+          document.getElementById('loader').setAttribute('style', '');
+          var xhr = new XMLHttpRequest();
+          var firstName = document.getElementById('firstName').value;
+          var lastName = document.getElementById('lastName').value;
+          var iin = document.getElementById('iin').value;
+          var selectCourseBox = document.getElementById('selectCourse');
+          var sum = selectCourseBox.options[selectCourseBox.selectedIndex].value;
+          var backUrl = 'http://sociolift.kz';
+          var url = apiUrl + 'first=' + firstName + '&last=' + lastName + '&iin=' + iin + '&sum=' + sum + '&backUrl=' + backUrl;
+
+          xhr.open('GET', url, false);
+          xhr.send();
+
+          if (xhr.status !== 200) {
+            document.getElementById('loader').setAttribute('style', 'display:none');
+            alert("Произошла ошибка, попробуйте позже");
+          }
+          else {
+            a = xhr.responseText.substring(1, xhr.responseText.length - 1);
+            window.location.href = a;
+          }
+        }
+        form.classList.add('was-validated');
+      })
+    }
+  </script>
+  <div id='loader' class="loading"  style="display: none">Loading&#8230;</div>
+</body>
+</html>
